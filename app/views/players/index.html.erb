@@ -11,7 +11,7 @@
   <div class="form-group">
     <%= form_for(@player) do |f| %>
     <%= f.label :name %>
-    <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control"}) %>
+    <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
     <%= f.submit "Play Game", id: "play_game"%>
       <% end %>
   </div>

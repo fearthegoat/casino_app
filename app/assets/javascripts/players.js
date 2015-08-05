@@ -1,8 +1,17 @@
 $(document).ready(function() {
-  var add_button
-  add_button = $('#play_game');
+  var play_button
+  play_button = $('#play_game');
 
-  $(add_button).click(function(e) {
+  $(play_button).click(function(e) {
     e.preventDefault();
+    var player = $("#player_name").val();
+    $.getJSON("/lookup?players=" + player, {
+      "alt": "json",
+      "max-results": 100
+    }, function(data) {
     });
   });
+});
+
+
+
