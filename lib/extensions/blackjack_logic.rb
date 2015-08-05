@@ -163,11 +163,11 @@ def build_player_hand_with_ace(current_player)
 end
 
 ## Define players and dealer
-travis = Card_Player.new("Travis", 700)
-kevin = Card_Player.new("Kevin", 600)
-dog = Card_Player.new
+# travis = Card_Player.new("Travis", 700)
+# kevin = Card_Player.new("Kevin", 600)
+# dog = Card_Player.new
 
-PLAYERS = travis, kevin, dog
+# PLAYERS = travis, kevin, dog
 @dealer = StackOfCards.new
 
 # Display everyone's stacks and get bets
