@@ -8,6 +8,8 @@ class PlayersController < ApplicationController
   end
 
   def game
+    @player = Player.find(params[:players])
+    @bet = params[:bet]
   respond_to do |format|
       format.json { render json: Player.find(params[:players]).money }
     end

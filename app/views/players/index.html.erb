@@ -12,7 +12,14 @@
     <%= form_for(@player) do |f| %>
     <%= f.label :name %>
     <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
+    <div>
+        <%= f.label "Bet amount" %>
+        <%= f.number_field :bet, :class => "form-control" %>
+    </div>
     <%= f.submit "Play Game", id: "play_game"%>
       <% end %>
   </div>
+</div>
+
+<div id="player_money">
 </div>
