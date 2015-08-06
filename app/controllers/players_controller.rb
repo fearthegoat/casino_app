@@ -10,7 +10,6 @@ class PlayersController < ApplicationController
   def game
     @bid = params[:bid].to_i
     @player = Player.find(params[:players])
-    raise :oops
     play_game(@player, @bid)
 
     respond_to do |format|
