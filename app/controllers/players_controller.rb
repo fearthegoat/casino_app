@@ -11,19 +11,16 @@ class PlayersController < ApplicationController
     @bid = params[:bid].to_i
     @player = Player.find(params[:players])
 
-
     if @bid > @player.money
       redirect_to root_url
       flash[:notice] = "Bet", "must be less than #{@player.money}"
       return
     end
 
-
-
     play_game(@player, @bid)
 
     respond_to do |format|
-      format.json { render json: Player.find(params[:players]).money }
+      format.js
     end
   end
 
