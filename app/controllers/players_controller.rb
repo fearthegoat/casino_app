@@ -8,9 +8,9 @@ class PlayersController < ApplicationController
   end
 
   def game
+
     @player = Player.find(params[:players])
-    @bet = params[:bet]
-    @card_player = Card_Player.new(@player.name, @player.money)
+    play_game(@player, 50)
 
     respond_to do |format|
       format.json { render json: Player.find(params[:players]).money }

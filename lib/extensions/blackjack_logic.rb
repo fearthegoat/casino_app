@@ -131,10 +131,6 @@ class Card_Player
   end
 end
 
-### Need to build a proper basic strategy chart here
-### Inputs are (1) Dealer's up card and (2) Player's hand
-### Use slice with Dealer's up card???
-
 
 def build_player_hand_with_no_ace(current_player)
   if current_player.total_value >= 17 ||  current_player.total_value >= 13 && @dealer.total_value <= 6 || current_player.total_value == 12 && @dealer.total_value <= 6 && @dealer.total_value >= 4 # The "Standard Strategy" for blackjack
@@ -162,97 +158,112 @@ def build_player_hand_with_ace(current_player)
   end
 end
 
+def outcome(current_player)
+  if current_player.cards.total_value == 21 && current_player.cards.count == 2
+    current_player.blackjack
+  elsif current_player.cards.total_value > 21
+    current_player.loses
+  elsif @dealer.total_value > 21
+    current_player.wins
+  elsif current_player.cards.total_value > @dealer.total_value
+    current_player.wins
+  elsif current_player.cards.total_value < @dealer.total_value
+    current_player.loses
+  else
+    nil
+  end
+end
+
+def play_game(player, bet)
+  @dealer = StackOfCards.new
+  current_player = Card_Player.new(player.name, player.money)
+  @deck = Deck.new
+  @deck.shuffle
+  current_player.bet(bet)
+  @deck.deal_off_top_to(@dealer, 1)
+  @deck.deal_off_top_to(current_player.cards, 2)
+
+  if current_player.cards.ace_present?
+    build_player_hand_with_ace(current_player.cards)
+  else
+    build_player_hand_with_no_ace(current_player.cards)
+  end
+
+  while @dealer.total_value <= 16
+    @deck.deal_off_top_to(@dealer, 1)
+  end
+
+  outcome(current_player)
+  player.money = current_player.cash
+  player.save
+end
+
+
 ## Define players and dealer
 # travis = Card_Player.new("Travis", 700)
 # kevin = Card_Player.new("Kevin", 600)
 # dog = Card_Player.new
 
 # PLAYERS = travis, kevin, dog
-@dealer = StackOfCards.new
 
-# Display everyone's stacks and get bets
-puts "Current stacks:"
 
-PLAYERS.each do |person|
-  puts "#{person.name}: #{person.cash}"
-end
+# # Display everyone's stacks and get bets
+# puts "Current stacks:"
 
-PLAYERS.each do |person|
-  print "#{person.name} bet: "
-  bet_amount = gets.chomp
-  person.bet(bet_amount.to_i)
-end
+# PLAYERS.each do |person|
+#   puts "#{person.name}: #{person.cash}"
+# end
+
+# PLAYERS.each do |person|
+#   print "#{person.name} bet: "
+#   bet_amount = gets.chomp
+#   person.bet(bet_amount.to_i)
+# end
 
 # Create a deck and shuffle it
-@deck = Deck.new
-@deck.shuffle
+
 
 # Deal the cards to dealer and players
-@deck.deal_off_top_to(@dealer, 1)
 
-PLAYERS.each do |person|
-  @deck.deal_off_top_to(person.cards, 2)
-end
+# PLAYERS.each do |person|
+# end
 
-print "dealer: "
-puts "#{(@dealer).to_s}"
+# print "dealer: "
+# puts "#{(@dealer).to_s}"
 
-PLAYERS.each do |person|
-  print "#{person.name}: "
-  print "#{person.cards.to_s}"
-  puts "#{person.name}'s total value: #{person.cards.total_value} "
-  puts ""
-end
+# PLAYERS.each do |person|
+#   print "#{person.name}: "
+#   print "#{person.cards.to_s}"
+#   puts "#{person.name}'s total value: #{person.cards.total_value} "
+#   puts ""
+# end
 
-PLAYERS.each do |person|
-  if person.cards.ace_present?
-    build_player_hand_with_ace(person.cards)
-  else
-    build_player_hand_with_no_ace(person.cards)
-  end
-end
+# PLAYERS.each do |person|
+
+# end
 
 # Deals the dealer's hand -- assumes dealer stands on soft 17
 # Should be <= 16
-while @dealer.total_value <= 16
-  @deck.deal_off_top_to(@dealer, 1)
-end
 
-puts "dealer: "
-puts "#{@dealer.to_s}"
-puts "dealer total_value: #{@dealer.total_value}"
-puts ""
 
-PLAYERS.each do |person|
-  print person.name, ": "
-  print "#{person.cards.to_s}"
-  print person.name, " total value: ", person.cards.total_value, "\n\n"
-end
+# puts "dealer: "
+# puts "#{@dealer.to_s}"
+# puts "dealer total_value: #{@dealer.total_value}"
+# puts ""
+
+# PLAYERS.each do |person|
+#   print person.name, ": "
+#   print "#{person.cards.to_s}"
+#   print person.name, " total value: ", person.cards.total_value, "\n\n"
+# end
 
 ## Code to determine who wins
-PLAYERS.each do |person|
-  if person.cards.total_value == 21 && person.cards.count == 2
-    puts "Blackjack for ", person.name
-    person.blackjack
-  elsif person.cards.total_value > 21
-    puts "#{person.name} Busts"
-    person.loses
-  elsif @dealer.total_value > 21
-    puts "Dealer Busts"
-    person.wins
-  elsif person.cards.total_value > @dealer.total_value
-    puts "#{person.name} Wins"
-    person.wins
-  elsif person.cards.total_value < @dealer.total_value
-    puts "Dealer Wins"
-    person.loses
-  else
-    puts "Push"
-  end
-end
+# PLAYERS.each do |person|
 
-puts "Current stacks:"
+# end
 
-PLAYERS.each do |person|
-  print person.name, ": ", person.cash, "\n"
-end
+# puts "Current stacks:"
+
+# PLAYERS.each do |person|
+#   print person.name, ": ", person.cash, "\n"
+# end
