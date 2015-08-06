@@ -8,9 +8,10 @@ class PlayersController < ApplicationController
   end
 
   def game
-
+    @bid = params[:bid].to_i
     @player = Player.find(params[:players])
-    play_game(@player, 50)
+    raise :oops
+    play_game(@player, @bid)
 
     respond_to do |format|
       format.json { render json: Player.find(params[:players]).money }
