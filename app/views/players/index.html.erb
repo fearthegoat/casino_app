@@ -2,7 +2,7 @@
 <p>
   <ul>
     <% @players.each do |p| %>
-    <li><%= "#{p.name}: $#{p.money.to_roman}"  %></li>
+    <li><%= "#{p.name}: $#{p.money}"  %></li>
     <% end %>
   </ul>
 </p>
