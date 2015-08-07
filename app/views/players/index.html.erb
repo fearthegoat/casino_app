@@ -16,6 +16,10 @@
         <%= f.label "Bet amount" %>
         <%= f.number_field :bet, :class => "form-control", id: "bid_amount" %>
     </div>
+    <div>
+        <%= f.label "Number of games to be played" %>
+        <%= f.number_field :games, :class => "form-control", id: "number_games" %>
+    </div>
     <%= f.submit "Play Game", id: "play_game"%>
       <% end %>
   </div>

@@ -6,7 +6,8 @@ $(document).ready(function() {
     e.preventDefault();
     var player = $("#player_name").val();
     var bid = $("#bid_amount").val();
-    $.getJSON("/lookup?players=" + player + "&bid=" + bid, {
+    var games = $("#number_games").val();
+    $.getJSON("/lookup?players=" + player + "&bid=" + bid + "&games=" + games, {
       "alt": "json",
       "max-results": 100
     }, function(data) {
