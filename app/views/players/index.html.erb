@@ -1,29 +1,41 @@
-<h1>List of players</h1><hr>
-<p>
-  <ul>
-    <% @players.each do |p| %>
-    <li><%= "#{p.name}: $#{p.money}"  %></li>
-    <% end %>
-  </ul>
-</p>
+<div class="main">
+  <h1>List of players</h1><hr>
+  <p>
+    <ul>
+      <% @players.each do |p| %>
+      <li><%= "#{p.name}: $#{p.money}"  %></li>
+      <% end %>
+    </ul>
+  </p>
 
-<div class="step">
-  <div class="form-group">
-    <%= form_for(@player) do |f| %>
-    <%= f.label :name %>
-    <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
-    <div>
+  <div class="step">
+    <div class="form-group">
+      <%= form_for(@player) do |f| %>
+      <%= f.label :name %>
+      <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
+      <div>
         <%= f.label "Bet amount" %>
         <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
+      </div>
+      <div>
+          <%= f.label "Number of games to be played" %>
+          <%= f.number_field(:games, :class => "form-control", id: "number_games", in: 5..100, step: 5) %>
+      </div>
+      <%= f.submit "Play Game", id: "play_game"%>
+        <% end %>
     </div>
-    <div>
-        <%= f.label "Number of games to be played" %>
-        <%= f.number_field(:games, :class => "form-control", id: "number_games", in: 5..100, step: 5) %>
-    </div>
-    <%= f.submit "Play Game", id: "play_game"%>
-      <% end %>
+  </div>
+
+  <div id="player_money">
   </div>
 </div>
 
-<div id="player_money">
+<div class="todo">
+  <h1>TODO</h1><hr>
+  <ol>
+    <li>Better js output</li>
+    <li>Chart</li>
+    <li>Progress Bar, requesting from server</li>
+    <li>Materialize</li>
+  </ol>
 </div>
