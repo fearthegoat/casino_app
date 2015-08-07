@@ -1,1 +1,1 @@
-$('#player_money').html("<%= escape_javascript(render(partial: "game_details"))%>")
+$('#player_money').html("<%= escape_javascript(render(partial: 'game_details'))%>")
