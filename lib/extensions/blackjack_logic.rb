@@ -194,6 +194,7 @@ def play_game(player, bet)
   end
 
   outcome(current_player)
+  @money_tracker << current_player.cash
   player.money = current_player.cash
   player.save
 end

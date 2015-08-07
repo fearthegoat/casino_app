@@ -16,9 +16,8 @@ class PlayersController < ApplicationController
       flash[:notice] = "Bet", "must be less than #{@player.money}"
       return
     end
-
+    @money_tracker = []  # used to track the change in player's money over the games played
     play_game(@player, @bid)
-
     respond_to do |format|
       format.js
     end
