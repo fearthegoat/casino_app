@@ -2,7 +2,7 @@
   <h1>List of players</h1><hr>
     <ul>
       <% @players.each do |p| %>
-      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>"><%=number_to_currency(p.money) %></li>
+      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>">$ <%=p.money.to_roman %></li>
       <% end %>
     </ul>
 
