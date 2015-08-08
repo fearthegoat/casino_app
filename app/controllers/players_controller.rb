@@ -25,9 +25,7 @@ class PlayersController < ApplicationController
         @game_counter += 1
       end
     end
-    respond_to do |format|
-      format.js
-    end
+      render 'game.js.erb'
   end
 
   def edit

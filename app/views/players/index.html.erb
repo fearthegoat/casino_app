@@ -1,18 +1,17 @@
 <div class="main">
   <h1>List of players</h1><hr>
-  <p>
     <ul>
       <% @players.each do |p| %>
-      <li><%= "#{p.name}: $#{p.money}"  %></li>
+      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>"><%=number_to_currency(p.money) %></li>
       <% end %>
     </ul>
-  </p>
+
 
   <div class="step">
     <div class="form-group">
       <%= form_for(@player) do |f| %>
       <%= f.label :name %>
-      <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
+      <%= f.collection_select(:key => "value", name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
       <div>
         <%= f.label "Bet amount" %>
         <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
@@ -26,7 +25,7 @@
     </div>
   </div>
 
-  <div id="player_money">
+  <div id="game_results">
   </div>
 </div>
 

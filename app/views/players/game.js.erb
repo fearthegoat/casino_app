@@ -1,0 +1,2 @@
+$('#<%= @player.name[0..3]%>').html('<span id="<%= @player.name[0..3]%>"><%= number_to_currency(@player.money) %></span>');
+$('#game_results').html("<%= escape_javascript(render(partial: 'game_details'))%>")
