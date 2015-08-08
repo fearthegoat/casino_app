@@ -11,7 +11,7 @@
     <div class="form-group">
       <%= form_for(@player) do |f| %>
       <%= f.label :name %>
-      <%= f.collection_select(:key => "value", name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
+      <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
       <div>
         <%= f.label "Bet amount" %>
         <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
