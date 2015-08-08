@@ -1,4 +1,5 @@
 == README
+Plays a game(s) of blackjack using the "basic strategy", which is the strategy to minimize the house advantage sans card-counting.  This is a learning app meant to use previously unused technologies.  The goal is to eventually use Materialize, chart generation, lib files for ruby computations, and others.
 
 Ruby version 2.0
 
