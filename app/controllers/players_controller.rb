@@ -32,6 +32,8 @@ class PlayersController < ApplicationController
       @games_tracker << i
       i += 1
     end
+    @min_amount = @money_tracker.min
+    @max_amount = @money_tracker.max
 
     @chart_hash =  @games_tracker.zip(@money_tracker)
       render 'game.js.erb'

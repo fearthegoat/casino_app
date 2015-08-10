@@ -1,2 +1,5 @@
 <h1><%= @player.name %>'s Money over games played</h1>
+<h2>Game Statistics</h2>
+<p>Highest cash balance: <%= number_to_currency(@max_amount) %></p>
+<p>Lowest cash balance: <%= number_to_currency(@min_amount) %></p>
   <%= line_chart @chart_hash, min: (@money_tracker.min - 100), max: (@money_tracker.max + 100), discrete: true  %>
