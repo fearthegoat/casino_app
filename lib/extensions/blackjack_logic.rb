@@ -191,6 +191,9 @@ def play_game(player, bet)
 
   while @dealer.total_value <= 16
     @deck.deal_off_top_to(@dealer, 1)
+    if @dealer.ace_present? && @dealer.total_value >= 22
+      @dealer.set_ace_value_to_1
+    end
   end
 
   outcome(current_player)
@@ -198,73 +201,3 @@ def play_game(player, bet)
   player.money = current_player.cash
   player.save
 end
-
-
-## Define players and dealer
-# travis = Card_Player.new("Travis", 700)
-# kevin = Card_Player.new("Kevin", 600)
-# dog = Card_Player.new
-
-# PLAYERS = travis, kevin, dog
-
-
-# # Display everyone's stacks and get bets
-# puts "Current stacks:"
-
-# PLAYERS.each do |person|
-#   puts "#{person.name}: #{person.cash}"
-# end
-
-# PLAYERS.each do |person|
-#   print "#{person.name} bet: "
-#   bet_amount = gets.chomp
-#   person.bet(bet_amount.to_i)
-# end
-
-# Create a deck and shuffle it
-
-
-# Deal the cards to dealer and players
-
-# PLAYERS.each do |person|
-# end
-
-# print "dealer: "
-# puts "#{(@dealer).to_s}"
-
-# PLAYERS.each do |person|
-#   print "#{person.name}: "
-#   print "#{person.cards.to_s}"
-#   puts "#{person.name}'s total value: #{person.cards.total_value} "
-#   puts ""
-# end
-
-# PLAYERS.each do |person|
-
-# end
-
-# Deals the dealer's hand -- assumes dealer stands on soft 17
-# Should be <= 16
-
-
-# puts "dealer: "
-# puts "#{@dealer.to_s}"
-# puts "dealer total_value: #{@dealer.total_value}"
-# puts ""
-
-# PLAYERS.each do |person|
-#   print person.name, ": "
-#   print "#{person.cards.to_s}"
-#   print person.name, " total value: ", person.cards.total_value, "\n\n"
-# end
-
-## Code to determine who wins
-# PLAYERS.each do |person|
-
-# end
-
-# puts "Current stacks:"
-
-# PLAYERS.each do |person|
-#   print person.name, ": ", person.cash, "\n"
-# end
