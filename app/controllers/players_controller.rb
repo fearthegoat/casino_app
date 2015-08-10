@@ -12,7 +12,8 @@ class PlayersController < ApplicationController
     @player = Player.find(params[:players])
 
     @money_tracker = []  # used to track the change in player's money over the games played
-
+    @games_tracker = []  # used to track the number of games played
+    @money_tracker << @player.money
     @game_counter = 0
 
     params[:games].to_i.times do
@@ -25,6 +26,14 @@ class PlayersController < ApplicationController
         @game_counter += 1
       end
     end
+
+    i = 0
+    (@game_counter+1).times do
+      @games_tracker << i
+      i += 1
+    end
+
+    @chart_hash =  @games_tracker.zip(@money_tracker)
       render 'game.js.erb'
   end
 

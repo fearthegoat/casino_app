@@ -2,12 +2,13 @@
 <html>
 <head>
   <title>SampleApp</title>
-  <%= javascript_include_tag "//www.google.com/jsapi" %>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+
 <% [:notice, :alert].each do |level| %>
     <% if flash[level] %>
       <p>Errors</p>

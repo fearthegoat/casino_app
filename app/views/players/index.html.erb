@@ -1,30 +1,28 @@
 <div class="main">
-  <h1>List of players</h1><hr>
-    <ul>
-      <% @players.each do |p| %>
-      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>">$ <%=p.money.to_roman %></li>
-      <% end %>
-    </ul>
-
-
+  <h1>BlackJack Game</h1><hr>
+  <h2>List of Available Players:</h2>
+  <ul>
+    <% @players.each do |p| %>
+      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>">$ <%=p.money %></li>
+    <% end %>
+  </ul>
   <div class="step">
     <div class="form-group">
       <%= form_for(@player) do |f| %>
-      <%= f.label :name %>
-      <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
-      <div>
-        <%= f.label "Bet amount" %>
-        <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
-      </div>
-      <div>
+        <%= f.label :name %>
+        <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
+        <div>
+          <%= f.label "Bet amount" %>
+          <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
+        </div>
+        <div>
           <%= f.label "Number of games to be played" %>
           <%= f.number_field(:games, :class => "form-control", id: "number_games", in: 5..100, step: 5) %>
-      </div>
-      <%= f.submit "Play Game", id: "play_game"%>
-        <% end %>
+        </div>
+        <%= f.submit "Play Game", id: "play_game"%>
+      <% end %>
     </div>
   </div>
-
   <div id="game_results">
   </div>
 </div>
@@ -34,8 +32,6 @@
   <ol>
     <li>Better js output</li>
     <li>Continously update money as games progress using js</li>
-    <li>Generate x axis array using while loop</li>
-    <li>Chart</li>
     <li>Progress Bar, requesting from server (optional)</li>
     <li>Materialize</li>
 

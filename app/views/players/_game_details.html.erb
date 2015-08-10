@@ -1,3 +1,2 @@
-<h1>
-<%= line_chart @money_tracker.group_by { |num| @money_tracker.index(num) } %>
-</h1>
+<h1><%= @player.name %>'s Money over games played</h1>
+  <%= line_chart @chart_hash, min: (@money_tracker.min - 100), max: (@money_tracker.max + 100), discrete: true  %>
