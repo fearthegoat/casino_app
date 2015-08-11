@@ -34,24 +34,17 @@ class PlayersController < ApplicationController
     end
     @min_amount = @money_tracker.min
     @max_amount = @money_tracker.max
-
+    @standard_deviation = standard_deviation(@money_tracker)
     @chart_hash =  @games_tracker.zip(@money_tracker)
     # @chart_hash = [ {name: "Trav", data: {1 => 1809, 2 => 1810, 3 => 1820} }, {name: "Kevin", data: {1 => 1830, 2 => 1820, 3 => 1810} } ]
       render 'game.js.erb'
   end
 
-  def edit
+  def standard_deviation(array)
+    sum = array.inject(0.0) { | result, value | result + value}
+    average = sum / array.size
+    variance = (array.inject(0.0) { | total, result | total + (average - result)**2}) / array.size
+    Math.sqrt(variance)
   end
 
-  def update
-  end
-
-  def create
-  end
-
-  def new
-  end
-
-  def destroy
-  end
 end

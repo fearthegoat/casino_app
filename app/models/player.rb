@@ -7,5 +7,4 @@ class Player < ActiveRecord::Base
     "#{name}"
   end
 
-
 end
