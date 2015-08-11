@@ -174,6 +174,16 @@ def outcome(current_player)
   end
 end
 
+def pair_splitting(current_player_cards)
+  if current_player_cards.a_pair?
+  split_hand(current_player_cards) unless current_player_cards.total_value == 20 || current_player_cards.total_value == 18 && (@dealer.total_value == 7 || @dealer.total_value >=10) || current_player_cards.total_value <= 14 && @dealer.total_value >=8 || current_player_cards.total_value == 10 || current_player_cards.total_value ==8 && @dealer.total_value <=4 || current_player_cards.total_value <= 12 && current_player_cards.total_value >= 8 && @dealer.total_value == 7
+  end
+end
+
+def split_hand(cards)
+
+end
+
 def play_game(player, bet)
   @dealer = StackOfCards.new
   current_player = Card_Player.new(player.name, player.money)
