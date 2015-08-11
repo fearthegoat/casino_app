@@ -111,7 +111,9 @@ class Card_Player
   def initialize(name = "monkey", money = 500)
     @name = name
     @cash = money
-    @cards = StackOfCards.new
+    @hands = []
+    @initial_hand = StackOfCards.new
+    @hands << @initial_hand
   end
 
   def bet(bet_amount)
