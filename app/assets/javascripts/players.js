@@ -7,7 +7,8 @@ $(document).ready(function() {
     var player = $("#player_name").val();
     var bid = $("#bid_amount").val();
     var games = $("#number_games").val();
-    $.ajax("/lookup?players=" + player + "&bid=" + bid + "&games=" + games);
+    var all = $("#all").val();
+    $.ajax("/lookup?players=" + player + "&bid=" + bid + "&games=" + games + "&all=" + all);
   });
 });
 

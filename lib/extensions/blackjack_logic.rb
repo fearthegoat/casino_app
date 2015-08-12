@@ -172,15 +172,14 @@ def outcome(current_player)
   else
     nil
   end
+  current_player.money = current_player.cash
+  current_player.save
 end
 
-def play_game(player, bet)
-  @dealer = StackOfCards.new
+def player_generate_hand(player, bet, dealer = StackOfCards.new)
+  @dealer = dealer
   current_player = Card_Player.new(player.name, player.money)
-  @deck = Deck.new
-  @deck.shuffle
   current_player.bet(bet)
-  @deck.deal_off_top_to(@dealer, 1)
   @deck.deal_off_top_to(current_player.cards, 2)
 
   if current_player.cards.ace_present?
@@ -188,16 +187,16 @@ def play_game(player, bet)
   else
     build_player_hand_with_no_ace(current_player.cards)
   end
+end
 
+def finish_dealer_hand
   while @dealer.total_value <= 16
     @deck.deal_off_top_to(@dealer, 1)
     if @dealer.ace_present? && @dealer.total_value >= 22
       @dealer.set_ace_value_to_1
     end
   end
-
-  outcome(current_player)
-  @money_tracker << current_player.cash
-  player.money = current_player.cash
-  player.save
 end
+
+  # outcome(current_player)
+  # @money_tracker << current_player.cash

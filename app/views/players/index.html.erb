@@ -9,6 +9,7 @@
   <div class="step">
     <div class="form-group">
       <%= form_for(@player) do |f| %>
+        <%= f.check_box :all, id: 'all' %>
         <%= f.label :name %>
         <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
         <div>
