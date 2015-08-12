@@ -11,9 +11,9 @@
       <%= form_for(@player) do |f| %>
         <%= f.label :name %>
         <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
-        <%= f.label "Have all players play game" %>
-        <%= f.check_box :all, id: 'all' %>
-
+        <input type="checkbox" value="0" id="all" checked="checked" />
+        <input type="hidden" value="1" id="hdnall" name="all" />
+        <label for="all">Have all players play game</label>
         <div>
           <%= f.label "Bet amount" %>
           <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>

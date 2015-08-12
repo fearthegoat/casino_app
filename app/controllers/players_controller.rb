@@ -12,6 +12,7 @@ class PlayersController < ApplicationController
     if params[:all] == "1"
       @players = Player.all
     else
+      @players = []
       @players << Player.find(params[:players])
     end
     play_games(@players, @bid, params[:games].to_i)
