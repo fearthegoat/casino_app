@@ -33,15 +33,21 @@ class PlayersController < ApplicationController
       end
     end
     player_number = 0
-    chart_hash = Hash.new
+    @chart_array = []
     players.each do |player|
       player_array = []
+      player_hash = Hash.new
       @game_results.each_with_index do |number, i|
         unless i >= @game_results.size / players.size
           array_index = player_number + (i)*players.size
           player_array << @game_results[array_index]
         end
       end
+      player_data_hash = Hash[((1..player_array.size).to_a).zip(player_array)]
+
+      player_hash.merge!(data: player_data_hash)
+      player_hash.merge!(name: player.name)
+      @chart_array << player_hash
       player_number +=1
     end
   end
@@ -63,8 +69,7 @@ class PlayersController < ApplicationController
     # @max_amount = @money_tracker.max
     # @standard_deviation = standard_deviation(@money_tracker)
     # # @chart_hash =  @games_tracker.zip(@money_tracker)
-    @chart_hash = [ {name: "Trav", data: {0 => 1809, 1 => 1810, 2 => 1820} }, {name: "Kevin", data: {1 => 1830, 2 => 1820, 3 => 1810} } ]
-    #
+    # @chart_array = [ {name: "Trav", data: {0 => 1809, 1 => 1810, 2 => 1820} }, {name: "Kevin", data: {1 => 1830, 2 => 1820, 3 => 1810} } ]
 
 
   def standard_deviation(array)
