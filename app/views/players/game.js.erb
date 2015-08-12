@@ -1,2 +1,7 @@
-$('#<%= @player.name[0..3]%>').html('<span id="<%= @player.name[0..3]%>"><%= @player.money %></span>');
+<% if @players.size > 1 %>
+  $('#player_list').html('<% @players.each do |p| %><li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>">$ <%=p.money %></li><% end %>')
+<% else %>
+  $('#<%= @players.first.name[0..3]%>').html('<span id="<%= @players.first.name[0..3]%>"><%= @players.first.money %></span>');
+<% end %>
+
 $('#game_results').html("<%= escape_javascript(render(partial: 'game_details'))%>")

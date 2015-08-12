@@ -6,6 +6,7 @@
 
 class Card
 
+  attr_accessor :cards
   attr_accessor :value
   attr_reader :name
 
@@ -21,6 +22,7 @@ class Card
 end
 
 class StackOfCards
+  attr_accessor :cards
 
   def initialize
     @cards = []
@@ -103,9 +105,9 @@ class Deck < StackOfCards
 end
 
 class Card_Player
+  attr_accessor :cards
   attr_accessor :cash
   attr_accessor :current_bet
-  attr_accessor :cards
   attr_accessor :name
 
   def initialize(name = "monkey", money = 500)
@@ -133,7 +135,7 @@ end
 
 
 def build_player_hand_with_no_ace(current_player)
-  if current_player.total_value >= 17 ||  current_player.total_value >= 13 && @dealer.total_value <= 6 || current_player.total_value == 12 && @dealer.total_value <= 6 && @dealer.total_value >= 4 # The "Standard Strategy" for blackjack
+  if current_player.total_value >= 17 ||  current_player.total_value >= 13 && @dealer.cards.first.value <= 6 || current_player.total_value == 12 && @dealer.cards.first.value <= 6 && @dealer.cards.first.value >= 4 # The "Standard Strategy" for blackjack
     return
   else
     @deck.deal_off_top_to(current_player, 1)
@@ -150,7 +152,7 @@ def build_player_hand_with_ace(current_player)
     build_player_hand_with_no_ace(current_player)
     return
   end
-  if current_player.total_value >= 19 ||  current_player.total_value >= 18 && @dealer.total_value <= 8
+  if current_player.total_value >= 19 ||  current_player.total_value >= 18 && @dealer.cards.first.value <= 8
     return
   else
     @deck.deal_off_top_to(current_player, 1)
@@ -158,7 +160,7 @@ def build_player_hand_with_ace(current_player)
   end
 end
 
-def outcome(current_player)
+def outcome(current_player, player)
   if current_player.cards.total_value == 21 && current_player.cards.count == 2
     current_player.blackjack
   elsif current_player.cards.total_value > 21
@@ -172,8 +174,9 @@ def outcome(current_player)
   else
     nil
   end
-  current_player.money = current_player.cash
-  current_player.save
+  @game_results << current_player.cash
+  player.money = current_player.cash
+  player.save
 end
 
 def player_generate_hand(player, bet, dealer = StackOfCards.new)
@@ -187,6 +190,7 @@ def player_generate_hand(player, bet, dealer = StackOfCards.new)
   else
     build_player_hand_with_no_ace(current_player.cards)
   end
+  outcome(current_player, player)
 end
 
 def finish_dealer_hand
