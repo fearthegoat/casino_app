@@ -21,6 +21,7 @@ class PlayersController < ApplicationController
 
   def play_games(players, bid, number_of_games)
     @game_results = []  #stores data for analysis
+    players.each { | player | @game_results << player.money }
     number_of_games.times do
       generate_deck
       create_dealer
@@ -44,7 +45,8 @@ class PlayersController < ApplicationController
           player_array << @game_results[array_index]
         end
       end
-      player_data_hash = Hash[((1..player_array.size).to_a).zip(player_array)]
+      player_array_indexed = player_array.map { |number| number - player_array[0]}
+      player_data_hash = Hash[((0..player_array.size).to_a).zip(player_array_indexed)]
 
       player_hash.merge!(data: player_data_hash)
       player_hash.merge!(name: player.name)
