@@ -46,7 +46,7 @@ class PlayersController < ApplicationController
         end
       end
       player_array_indexed = player_array.map { |number| number - player_array[0]}
-      generate_trend(player_array_indexed)
+      # generate_trend(player_array_indexed), for trendline (regression) generation
       player_data_hash = Hash[((0..player_array.size).to_a).zip(player_array_indexed)]
 
       player_hash.merge!(data: player_data_hash)
