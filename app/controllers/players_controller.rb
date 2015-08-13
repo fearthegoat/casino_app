@@ -46,6 +46,7 @@ class PlayersController < ApplicationController
         end
       end
       player_array_indexed = player_array.map { |number| number - player_array[0]}
+      generate_trend(player_array_indexed)
       player_data_hash = Hash[((0..player_array.size).to_a).zip(player_array_indexed)]
 
       player_hash.merge!(data: player_data_hash)
@@ -54,6 +55,19 @@ class PlayersController < ApplicationController
       player_number +=1
     end
   end
+
+  # def generate_trend(array)
+  #   trying to figure out how to build regression
+  #   y = mx + b
+  #   a.size times do
+  #     i += 1
+  #     slope = ( a[-i] - a[i-1] ) / (a.size - i + 1)
+  #     10.times do
+  #
+  #     end
+  #   slope
+  #   end
+  # end
 
   def generate_deck
     @deck = Deck.new
@@ -65,16 +79,10 @@ class PlayersController < ApplicationController
     @deck.deal_off_top_to(@dealer, 1)
   end
 
+  # leftover analytics from old verison
 
-
-
-    # @min_amount = @money_tracker.min
-    # @max_amount = @money_tracker.max
-    # @standard_deviation = standard_deviation(@money_tracker)
-    # # @chart_hash =  @games_tracker.zip(@money_tracker)
-    # @chart_array = [ {name: "Trav", data: {0 => 1809, 1 => 1810, 2 => 1820} }, {name: "Kevin", data: {1 => 1830, 2 => 1820, 3 => 1810} } ]
-
-
+  # @min_amount = @money_tracker.min
+  # @max_amount = @money_tracker.max
   def standard_deviation(array)
     sum = array.inject(0.0) { | result, value | result + value}
     average = sum / array.size

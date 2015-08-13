@@ -37,7 +37,6 @@ class StackOfCards
   end
 
   def set_ace_value_to_1
-    ace_cards = []
     @cards.each do |card|
       card.value = 1 if card.name == "Ace"
     end
