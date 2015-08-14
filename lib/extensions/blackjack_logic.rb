@@ -35,13 +35,13 @@ class StackOfCards
   end
 
   def set_ace_value_to_1
-    ace_cards = []
     @cards.each do |card|
       card.value = 1 if card.name == "Ace"
     end
   end
 
   def a_pair?
+    return false unless @cards.size > 2 # pair must have only 2 cards in the stackofcards
     a_pair = []
     @cards.each do |card|
       a_pair << card.name
@@ -176,15 +176,18 @@ def outcome(current_player)
   end
 end
 
-def pair_splitting(current_player_cards)
-  if current_player_cards.a_pair?
-  split_hand(current_player_cards) unless current_player_cards.total_value == 20 || current_player_cards.total_value == 18 && (@dealer.total_value == 7 || @dealer.total_value >=10) || current_player_cards.total_value <= 14 && @dealer.total_value >=8 || current_player_cards.total_value == 10 || current_player_cards.total_value ==8 && @dealer.total_value <=4 || current_player_cards.total_value <= 12 && current_player_cards.total_value >= 8 && @dealer.total_value == 7
-  end
+def splittable?(hand)
+  hand.a_pair? and not (hand.total_value == 20 || hand.total_value == 18 && (@dealer.total_value == 7 || @dealer.total_value >=10) || hand.total_value <= 14 && @dealer.total_value >=8 || hand.total_value == 10 || hand.total_value ==8 && @dealer.total_value <=4 || hand.total_value <= 12 && hand.total_value >= 8 && @dealer.total_value == 7)
 end
 
-def split_hand(cards)
-
+def split_hand(hand)
+  new_hand = StackOfCards.new
+  hand.deal_off_top_to(new_hand ,1)
+  @deck.deal_off_top_to(hand,1)
+  @deck.deal_off_top_to(new_hand,1)
+  @hands << new_hand
 end
+# [ [ACE,ACE] ]
 
 def play_game(player, bet)
   @dealer = StackOfCards.new
@@ -194,6 +197,12 @@ def play_game(player, bet)
   current_player.bet(bet)
   @deck.deal_off_top_to(@dealer, 1)
   @deck.deal_off_top_to(current_player.cards, 2)
+
+  @hands.each do |hand|
+    if hands.size < 4
+      split_hand(hand) if splittable?(hand)
+    end
+  end
 
   if current_player.cards.ace_present?
     build_player_hand_with_ace(current_player.cards)
