@@ -160,7 +160,9 @@ def build_player_hand_with_ace(current_player)
 end
 
 def outcome(current_player, player)
-  if current_player.cards.total_value == 21 && current_player.cards.count == 2
+  if @dealer.total_value == 21 && @dealer.count ==2
+    current_player.loses
+  elsif current_player.cards.total_value == 21 && current_player.cards.count == 2
     current_player.blackjack
   elsif current_player.cards.total_value > 21
     current_player.loses
