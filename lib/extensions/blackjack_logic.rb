@@ -107,6 +107,7 @@ class Card_Player
   attr_accessor :current_bet
   attr_accessor :cards
   attr_accessor :name
+  attr_accessor :hands
 
   def initialize(name = "monkey", money = 500)
     @name = name
@@ -161,18 +162,20 @@ def build_player_hand_with_ace(current_player)
 end
 
 def outcome(current_player)
-  if current_player.cards.total_value == 21 && current_player.cards.count == 2
-    current_player.blackjack
-  elsif current_player.cards.total_value > 21
-    current_player.loses
-  elsif @dealer.total_value > 21
-    current_player.wins
-  elsif current_player.cards.total_value > @dealer.total_value
-    current_player.wins
-  elsif current_player.cards.total_value < @dealer.total_value
-    current_player.loses
-  else
-    nil
+  current_player.hands.each do |hand|
+    if hand.total_value == 21 && hand.count == 2
+      current_player.blackjack
+    elsif hand.total_value > 21
+      current_player.loses
+    elsif @dealer.total_value > 21
+      current_player.wins
+    elsif hand.total_value > @dealer.total_value
+      current_player.wins
+    elsif hand.total_value < @dealer.total_value
+      current_player.loses
+    else
+      nil # push
+    end
   end
 end
 
@@ -196,18 +199,20 @@ def play_game(player, bet)
   @deck.shuffle
   current_player.bet(bet)
   @deck.deal_off_top_to(@dealer, 1)
-  @deck.deal_off_top_to(current_player.cards, 2)
+  @deck.deal_off_top_to(current_player.hands.first, 2)
 
-  @hands.each do |hand|
-    if hands.size < 4
+  current_player.hands.each do |hand|
+    if current_player.hands.size < 4
       split_hand(hand) if splittable?(hand)
     end
   end
 
-  if current_player.cards.ace_present?
-    build_player_hand_with_ace(current_player.cards)
-  else
-    build_player_hand_with_no_ace(current_player.cards)
+  current_player.hands.each do |hand|
+    if hand.ace_present?
+      build_player_hand_with_ace(hand)
+    else
+      build_player_hand_with_no_ace(hand)
+    end
   end
 
   while @dealer.total_value <= 16
