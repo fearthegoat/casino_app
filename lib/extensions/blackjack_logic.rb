@@ -6,7 +6,6 @@
 
 class Card
 
-  attr_accessor :cards
   attr_accessor :value
   attr_reader :name
 
@@ -43,6 +42,7 @@ class StackOfCards
   end
 
   def a_pair?
+    return false unless @cards.size == 2 # pair must have only 2 cards in the stackofcards
     a_pair = []
     @cards.each do |card|
       a_pair << card.name
@@ -104,15 +104,18 @@ class Deck < StackOfCards
 end
 
 class Card_Player
-  attr_accessor :cards
   attr_accessor :cash
   attr_accessor :current_bet
+  attr_accessor :cards
   attr_accessor :name
+  attr_accessor :hands
 
   def initialize(name = "monkey", money = 500)
     @name = name
     @cash = money
-    @cards = StackOfCards.new
+    @hands = []
+    initial_hand = StackOfCards.new
+    @hands << initial_hand
   end
 
   def bet(bet_amount)
@@ -134,7 +137,7 @@ end
 
 
 def build_player_hand_with_no_ace(current_player)
-  if current_player.total_value >= 17 ||  current_player.total_value >= 13 && @dealer.cards.first.value <= 6 || current_player.total_value == 12 && @dealer.cards.first.value <= 6 && @dealer.cards.first.value >= 4 # The "Standard Strategy" for blackjack
+  if current_player.total_value >= 17 ||  current_player.total_value >= 13 && @dealer.cards.first.value <= 6 || current_player.total_value == 12 && @dealer.cards.first.value <= 6 && @dealer.cards.first.value >= 4
     return
   else
     @deck.deal_off_top_to(current_player, 1)
@@ -160,36 +163,58 @@ def build_player_hand_with_ace(current_player)
 end
 
 def outcome(current_player, player)
-  if @dealer.total_value == 21 && @dealer.count == 2
-    current_player.loses
-  elsif current_player.cards.total_value == 21 && current_player.cards.count == 2
-    current_player.blackjack
-  elsif current_player.cards.total_value > 21
-    current_player.loses
-  elsif @dealer.total_value > 21
-    current_player.wins
-  elsif current_player.cards.total_value > @dealer.total_value
-    current_player.wins
-  elsif current_player.cards.total_value < @dealer.total_value
-    current_player.loses
-  else
-    nil
+  current_player.hands.each do |hand|
+    if hand.total_value == 21 && hand.count == 2
+      current_player.blackjack
+    elsif hand.total_value > 21
+      current_player.loses
+    elsif @dealer.total_value > 21
+      current_player.wins
+    elsif hand.total_value > @dealer.total_value
+      current_player.wins
+    elsif hand.total_value < @dealer.total_value
+      current_player.loses
+    else
+      nil # push
+    end
   end
   @game_results << current_player.cash
   player.money = current_player.cash
   player.save
 end
 
+def splittable?(hand)
+  hand.a_pair? and not (hand.total_value == 20 || hand.total_value == 18 && (@dealer.cards.first.value == 7 || @dealer.cards.first.value >=10) || hand.total_value <= 14 && @dealer.cards.first.value >=8 || hand.total_value == 10 || hand.total_value ==8 && @dealer.cards.first.value <=4 || hand.total_value <= 12 && hand.total_value >= 8 && @dealer.cards.first.value == 7)
+end
+
+def split_hand(hand, player)
+  new_hand = StackOfCards.new
+  hand.deal_off_top_to(new_hand ,1)
+  @deck.deal_off_top_to(hand,1)
+  @deck.deal_off_top_to(new_hand,1)
+  player.hands << new_hand
+end
+# [ [ACE,ACE] ]
+
+
 def player_generate_hand(player, bet, dealer = StackOfCards.new)
   @dealer = dealer
   current_player = Card_Player.new(player.name, player.money)
   current_player.bet(bet)
-  @deck.deal_off_top_to(current_player.cards, 2)
+  @deck.deal_off_top_to(current_player.hands.first, 2)
 
-  if current_player.cards.ace_present?
-    build_player_hand_with_ace(current_player.cards)
-  else
-    build_player_hand_with_no_ace(current_player.cards)
+  current_player.hands.each do |hand|
+    if current_player.hands.size < 4
+      split_hand(hand, current_player) if splittable?(hand)
+    end
+  end
+
+  current_player.hands.each do |hand|
+    if hand.ace_present?
+      build_player_hand_with_ace(hand)
+    else
+      build_player_hand_with_no_ace(hand)
+    end
   end
   outcome(current_player, player)
 end
@@ -202,6 +227,3 @@ def finish_dealer_hand
     end
   end
 end
-
-  # outcome(current_player)
-  # @money_tracker << current_player.cash
