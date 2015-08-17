@@ -21,6 +21,7 @@ class Card
 end
 
 class StackOfCards
+  attr_accessor :cards
 
   def initialize
     @cards = []
@@ -41,7 +42,7 @@ class StackOfCards
   end
 
   def a_pair?
-    return false unless @cards.size > 2 # pair must have only 2 cards in the stackofcards
+    return false unless @cards.size == 2 # pair must have only 2 cards in the stackofcards
     a_pair = []
     @cards.each do |card|
       a_pair << card.name
@@ -183,12 +184,12 @@ def splittable?(hand)
   hand.a_pair? and not (hand.total_value == 20 || hand.total_value == 18 && (@dealer.total_value == 7 || @dealer.total_value >=10) || hand.total_value <= 14 && @dealer.total_value >=8 || hand.total_value == 10 || hand.total_value ==8 && @dealer.total_value <=4 || hand.total_value <= 12 && hand.total_value >= 8 && @dealer.total_value == 7)
 end
 
-def split_hand(hand)
+def split_hand(hand, player)
   new_hand = StackOfCards.new
   hand.deal_off_top_to(new_hand ,1)
   @deck.deal_off_top_to(hand,1)
   @deck.deal_off_top_to(new_hand,1)
-  @hands << new_hand
+  player.hands << new_hand
 end
 # [ [ACE,ACE] ]
 
@@ -203,7 +204,7 @@ def play_game(player, bet)
 
   current_player.hands.each do |hand|
     if current_player.hands.size < 4
-      split_hand(hand) if splittable?(hand)
+      split_hand(hand, current_player) if splittable?(hand)
     end
   end
 
