@@ -1,21 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SampleApp</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Blackjack Game</title>
   <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <nav class="teal" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Blackjack Game</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="https://github.com/fearthegoat/casino_app">View Source Here</a></li>
+      </ul>
 
-<% [:notice, :alert].each do |level| %>
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="https://github.com/fearthegoat/casino_app">View Source Here</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+  <% [:notice, :alert].each do |level| %>
     <% if flash[level] %>
       <p>Errors</p>
       <% end %>
   <% end %>
 
-<%= yield %>
+  <%= yield %>
 
-</body>
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by Kevin</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="../../dist/js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  </body>
 </html>
