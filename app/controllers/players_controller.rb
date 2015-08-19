@@ -46,7 +46,6 @@ class PlayersController < ApplicationController
         end
       end
       player_array_indexed = player_array.map { |number| number - player_array[0]}
-      # generate_trend(player_array_indexed), for trendline (regression) generation
       player_data_hash = Hash[((0..player_array.size).to_a).zip(player_array_indexed)]
 
       player_hash.merge!(data: player_data_hash)
@@ -55,19 +54,6 @@ class PlayersController < ApplicationController
       player_number +=1
     end
   end
-
-  # def generate_trend(array)
-  #   trying to figure out how to build regression
-  #   y = mx + b
-  #   a.size times do
-  #     i += 1
-  #     slope = ( a[-i] - a[i-1] ) / (a.size - i + 1)
-  #     10.times do
-  #
-  #     end
-  #   slope
-  #   end
-  # end
 
   def generate_deck
     @deck = Deck.new

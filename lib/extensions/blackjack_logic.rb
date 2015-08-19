@@ -164,7 +164,7 @@ end
 
 def outcome(current_player, player)
   current_player.hands.each do |hand|
-    if hand.total_value == 21 && hand.count == 2
+    if hand.total_value == 21 && hand.count == 2 && current_player.hands.size == 1
       current_player.blackjack
     elsif hand.total_value > 21
       current_player.loses
@@ -194,8 +194,6 @@ def split_hand(hand, player)
   @deck.deal_off_top_to(new_hand,1)
   player.hands << new_hand
 end
-# [ [ACE,ACE] ]
-
 
 def player_generate_hand(player, bet, dealer = StackOfCards.new)
   @dealer = dealer
