@@ -6,3 +6,28 @@
   display: inline-block;
   min-width: 45%;
 }
+
+.players {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#game {
+  background-color: #009688;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+input[type=number] {
+  font-size: 2rem !important;
+}
+
+.input-field label{
+  color: #fff !important;
+}
+
+#graph {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

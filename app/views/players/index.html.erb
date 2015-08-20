@@ -1,88 +1,113 @@
-<div class="main">
-  <h2>List of Available Players:</h2>
-  <ul id="player_list">
-    <% @players.each do |p| %>
-      <li><%= "#{p.name}: "%><span id="<%= p.name[0..3]%>">$ <%=p.money %></li>
+<div class="container valign">
+  <div class="responsive-table players">
+    <table>
+      <thead>
+        <tr>
+          <th data-field="id">Player Name</th>
+          <th data-field="price">Current Cash</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @players.each do |p| %>
+          <tr>
+            <td><%= "#{p.name}"%></td>
+            <td><span id="<%= p.name[0..3]%>">$ <%=p.money %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<section id="game">
+  <%= form_for(@player, html: {class: "col s12 m6"})  do |f|%>
+    <% if @player.errors.any? %>
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title"><%= pluralize(@player.errors.count, "error") %> prohibited this form from being saved:</span>
+          <ul>
+            <% @player.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     <% end %>
-  </ul>
-   <div class="container">
-    <div class="section">
+    <div class="row">
+      <div class="col s12 m5">
+        <div class="input-field col s12 m6">
+          <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "browser-default", id: "player_name "})%>
+        </div>
+        <div class="input-field col s12 m6">
+        <div class="switch">
+          <label>
+          No
+          <input type="checkbox" value="0" id="all" checked="checked">
+          <span class="lever"></span>
+          Yes
+          </label>
+          <label for="all" class="active">All Players Play Game?</label>
+        </div>
+        <input type="hidden" value="1" id="hdnall" name="all" />
 
-      <!--   Icon Section   -->
-      <div class="row">
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Speeds up development</h5>
-
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.number_field(:bet, id: "bid_amount", class: "validate", placeholder: "Bet Amount", in: 5..100, step: 5) %>
+            <label for="bid_amount" class="active">Bet Amount</label>
           </div>
         </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">User Experience Focused</h5>
-
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.number_field(:games, :class => "browser-default", id: "number_games", placeholder: "Number of games to be played", in:  5..100, step: 5) %>
+            <label for="number_games" class="active">Number of Games to Play</label>
           </div>
         </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center">Easy to work with</h5>
-
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.submit "Play Game", id: "play_game", class: "btn"%>
           </div>
         </div>
       </div>
+      <div class="col s12 m7">
+        <div id="graph">
+          <div id="game_results">
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</section>
+<div class="section">
 
-    </div>
-  </div>
-  <div class="step">
-    <div class="form-group">
-      <%= form_for(@player) do |f| %>
-        <%= f.label :name %>
-        <%= f.collection_select(:name, Player.all, :id, :name, {prompt: "Select a player"}, {class: "form-control", id: "player_name"}) %>
-        <input type="checkbox" value="0" id="all" checked="checked" />
-        <input type="hidden" value="1" id="hdnall" name="all" />
-        <label for="all">Have all players play game</label>
-        <div>
-          <%= f.label "Bet amount" %>
-          <%= f.number_field(:bet, :class => "form-control", id: "bid_amount", in: 5..100, step: 5) %>
+      <!--   Icon Section   -->
+      <div class="row">
+        <h1 class="center brown-text">Assumptions</h2>
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h3 class="center brown-text"><i class="material-icons">Splitting</i></h3>
+            <h5 class="center">Logic only allows for a single split</h5>
+
+            <p class="light"></p>
+          </div>
         </div>
-        <div>
-          <%= f.label "Number of games to be played" %>
-          <%= f.number_field(:games, :class => "form-control", id: "number_games", in: 5..100, step: 5) %>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h3 class="center brown-text"><i class="material-icons">Blackjack</i></h3>
+            <h5 class="center">Payout is 1.5x bid amount</h5>
+
+            <p class="light"></p>
+          </div>
         </div>
-        <%= f.submit "Play Game", id: "play_game"%>
-      <% end %>
-    </div>
-  </div>
-  <div id="game_results">
-    <h3>README</h3>
-    <p>This program plays blackjack according to the "Basic Strategy", which is the strategy that minimizes the house advantage.  This strategy effectively reduces the house advantage to ~0.5%, depending on the amount of decks used.  </p>
-    <h4>Assumptions:</h4><hr>
-    <ul>
-      <li>Currently the program allows splitting to be exercised once</li>
-      <li>Blackjack payout is 1.5x bet</li>
-      <li>Dealer must stand on soft 17.</li>
-    </ul>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h3 class="center brown-text"><i class="material-icons">Dealer Ace</i></h3>
+            <h5 class="center">Dealer must stand on soft 17</h5>
+
+            <p class="light"></p>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
-
-<div class="todo">
-  <h1>TODO</h1><hr>
-  <ol>
-    <li>Add X and Y axis labels to chart</li>
-    <li>Add standard deviation, max, min analytics (again)</li>
-    <li>Attempt to build from scratch trend line (aka regression)</li>
-    <li>Add handling when a single player runs out of money but other players have not</li>
-    <li>Better js output</li>
-    <li>Materialize</li>
-
-  </ol>
-</div>
-
-
